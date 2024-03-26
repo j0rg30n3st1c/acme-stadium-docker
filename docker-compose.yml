@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  frontend:
+    image: front-app
+
+  nginx-proxy:
+    image: nginx:latest
+    volumes:
+      - ./proxy/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "8080:80"
+
+  alineaciones-partido:
+    image: python
+    volumes:
+        - ./python/alineaciones_partido.py:/app/alineaciones_partido.py
+    command: [python, -u,"/app/alineaciones_partido.py"]
