@@ -101,3 +101,27 @@ services:
     volumes:
         - ./python/parking_sitios_restantes.py:/app/parking_sitios_restantes.py
     command: [python, -u,"/app/parking_sitios_restantes.py"]
+
+  api_bizum:
+    build:
+      context: .
+      dockerfile: pasarela_pago/Dockerfile
+    command: ["./main", "bizum"]
+
+  api_paypal:
+    build:
+      context: .
+      dockerfile: pasarela_pago/Dockerfile
+    command: ["./main", "paypal"]
+
+  api_tarjeta:
+    build:
+      context: .
+      dockerfile: pasarela_pago/Dockerfile
+    command: ["./main", "tarjeta"]
+
+  api_transferencia:
+    build:
+      context: .
+      dockerfile: pasarela_pago/Dockerfile
+    command: ["./main", "transferencia"]
