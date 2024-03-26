@@ -7,8 +7,8 @@ public class Main {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                System.out.println("Hola, soy un contenedor Java");
+                System.out.println("Hola, soy el la API de wallet");
             }
-        }, 0, 1000); // 1000 milliseconds = 1 segundo
+        }, 0, 5000); // 1000 milliseconds = 1 segundo
     }
 }

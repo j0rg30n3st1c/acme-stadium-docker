@@ -20,3 +20,38 @@ services:
       dockerfile: rabbitmq-consumer/Dockerfile
     depends_on:
       - rabbitmq
+
+  api_descarga:
+    image: openjdk
+    container_name: api_descarga
+    volumes:
+      - ./api_descarga.java:/code/api_descarga.java
+    command: java /code/api_descarga.java
+
+  api_email:
+    image: openjdk
+    container_name: api_email
+    volumes:
+      - ./api_email.java:/code/api_email.java
+    command: java /code/api_email.java
+
+  api_wallet:
+    image: openjdk
+    container_name: api_wallet
+    volumes:
+      - ./api_wallet.java:/code/api_wallet.java
+    command: java /code/api_wallet.java
+
+  qr:
+    image: openjdk
+    container_name: qr
+    volumes:
+      - ./qr.java:/code/qr.java
+    command: java /code/qr.java
+
+  validacion:
+    image: openjdk
+    container_name: validacion
+    volumes:
+      - ./validacion.java:/code/validacion.java
+    command: java /code/validacion.java
