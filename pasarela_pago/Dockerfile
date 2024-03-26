@@ -4,8 +4,8 @@ FROM golang:latest
 # Establece el directorio de trabajo dentro del contenedor
 WORKDIR /go/src/app
 
-# Copia el código fuente de la aplicación al directorio de trabajo del contenedor
-COPY api_paypal.go .
+# Copia todos los archivos Go al directorio de trabajo del contenedor
+COPY pasarela_pago/*.go ./
 
 # Genera el archivo go.mod
 RUN go mod init
