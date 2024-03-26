@@ -1,5 +1,5 @@
 import time
 
 while True:
-    print("Hola entradas restantes")
+    print("Hola soy el servicio de entradas restantes")
     time.sleep(5)
