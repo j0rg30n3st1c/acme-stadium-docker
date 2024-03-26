@@ -1,0 +1,6 @@
+rabbitmq/rabbitmq-producer/node_modules
+rabbitmq/rabbitmq-producer/build
+rabbitmq/rabbitmq-producer/npm-debug.log
+rabbitmq/rabbitmq-producer/.nyc
+rabbitmq/rabbitmq-producer/.env
+rabbitmq/rabbitmq-producer/.DS_Store
