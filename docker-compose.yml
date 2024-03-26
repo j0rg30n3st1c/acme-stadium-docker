@@ -16,3 +16,33 @@ services:
     volumes:
         - ./python/alineaciones_partido.py:/app/alineaciones_partido.py
     command: [python, -u,"/app/alineaciones_partido.py"]
+
+  entradas-restantes:
+    image: python
+    volumes:
+        - ./python/entradas_restantes.py:/app/entradas_restantes.py
+    command: [python, -u,"/app/entradas_restantes.py"]
+
+  lista-partidos:
+    image: python
+    volumes:
+        - ./python/lista_partidos.py:/app/lista_partidos.py
+    command: [python, -u,"/app/lista_partidos.py"]
+
+  mapa-entradas-restantes:
+    image: python
+    volumes:
+        - ./python/mapa_entradas_restantes.py:/app/mapa_entradas_restantes.py
+    command: [python, -u,"/app/mapa_entradas_restantes.py"]
+
+  parking-mapa-sitios-restantes:
+    image: python
+    volumes:
+        - ./python/parking_mapa_sitios_restantes.py:/app/parking_mapa_sitios_restantes.py
+    command: [python, -u,"/app/parking_mapa_sitios_restantes.py"]
+
+  parking-sitios-restantes:
+    image: python
+    volumes:
+        - ./python/parking_sitios_restantes.py:/app/parking_sitios_restantes.py
+    command: [python, -u,"/app/parking_sitios_restantes.py"]
