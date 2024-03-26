@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+
+  rabbitmq:
+    image: rabbitmq:latest
+    ports:
+      - "5672:5672"  # Mapea el puerto 5672 del contenedor al puerto 5672 del host
+
+  producer:
+    build:
+      context: .
+      dockerfile: rabbitmq-producer/Dockerfile
+    depends_on:
+      - rabbitmq
+
+  consumer:
+    build:
+      context: .
+      dockerfile: rabbitmq-consumer/Dockerfile
+    depends_on:
+      - rabbitmq
