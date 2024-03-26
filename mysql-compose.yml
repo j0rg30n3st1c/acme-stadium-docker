@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  database-entradas:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: mypassword
+      MYSQL_DATABASE: entradas
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: myuserpassword
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+
+  database-entradas-slave:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: mypassword
+      MYSQL_DATABASE: entradas
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: myuserpassword
+    volumes:
+      - ./mysql_data_slave:/var/lib/mysql
