@@ -5,7 +5,7 @@ FROM node:20.12.0-alpine AS builder
 WORKDIR /app
 
 # Copy package.json and package-lock.json
-COPY package*.json ./
+COPY angular/package*.json ./
 
 # Install dependencies
 RUN npm install
