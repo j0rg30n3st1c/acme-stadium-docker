@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  cert-generator:
+    image: ubuntu:22.04
+    volumes:
+      - ./generate-cert.sh:/generate-cert.sh
+      - ./cert_data:/cert_data
+    command: sh /generate-cert.sh
