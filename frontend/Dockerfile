@@ -11,7 +11,7 @@ COPY angular/package*.json ./
 RUN npm install
 
 # Copy the rest of the application source code
-COPY . .
+COPY ./angular .
 
 # Build the Angular application
 RUN npm run build
