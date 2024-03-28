@@ -19,9 +19,9 @@ services:
     command: [python, -u,"/app/alineaciones_partido.py"]
 
   rabbitmq:
-    image: rabbitmq:latest
+    image: rabbitmq:management
     ports:
-      - "5672:5672"  # Mapea el puerto 5672 del contenedor al puerto 5672 del host
+      - "15672:15672"
 
   producer:
     build:
