@@ -1,6 +1,6 @@
 
 # Use official nginx image as the base image
-FROM nginx:latest
+FROM nginx:stable-alpine3.17
 
 # Copy the build output to replace the default nginx contents.
 COPY ./nginx.conf /etc/nginx/nginx.conf
