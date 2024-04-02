@@ -13,7 +13,8 @@ services:
       - ./proxy/nginx.conf:/etc/nginx/nginx.conf
       - ./cert_data:/cert_data
     ports:
-      - "8080:80"
+      - "80:80"
+      - "443:443"
 
   cert-generator:
     image: ubuntu:22.04
@@ -22,136 +23,136 @@ services:
       - ./cert_data:/cert_data
     command: sh /generate-cert.sh
 
-  alineaciones-partido:
-    image: python:alpine3.19
-    volumes:
-        - ./python/alineaciones_partido.py:/app/alineaciones_partido.py
-    command: [python, -u,"/app/alineaciones_partido.py"]
+  # alineaciones-partido:
+  #   image: python:alpine3.19
+  #   volumes:
+  #       - ./python/alineaciones_partido.py:/app/alineaciones_partido.py
+  #   command: [python, -u,"/app/alineaciones_partido.py"]
 
-  rabbitmq:
-    image: rabbitmq:management
-    ports:
-      - "15672:15672"
+  # rabbitmq:
+  #   image: rabbitmq:management
+  #   ports:
+  #     - "15672:15672"
 
-  producer:
-    build:
-      context: ./rabbitmq
-      dockerfile: rabbitmq-producer/Dockerfile
-    depends_on:
-      - rabbitmq
+  # producer:
+  #   build:
+  #     context: ./rabbitmq
+  #     dockerfile: rabbitmq-producer/Dockerfile
+  #   depends_on:
+  #     - rabbitmq
 
-  consumer:
-    build:
-      context: ./rabbitmq
-      dockerfile: rabbitmq-consumer/Dockerfile
-    depends_on:
-      - rabbitmq
+  # consumer:
+  #   build:
+  #     context: ./rabbitmq
+  #     dockerfile: rabbitmq-consumer/Dockerfile
+  #   depends_on:
+  #     - rabbitmq
 
-  api_descarga:
-    image: openjdk:23-oracle
-    volumes:
-      - ./java/api_descarga.java:/code/api_descarga.java
-    working_dir: /code
-    command: ["java", "api_descarga.java"]
+  # api_descarga:
+  #   image: openjdk:23-oracle
+  #   volumes:
+  #     - ./java/api_descarga.java:/code/api_descarga.java
+  #   working_dir: /code
+  #   command: ["java", "api_descarga.java"]
 
-  api_email:
-    image: openjdk:23-oracle
-    volumes:
-      - ./java/api_email.java:/code/api_email.java
-    working_dir: /code
-    command: ["java", "api_email.java"]
+  # api_email:
+  #   image: openjdk:23-oracle
+  #   volumes:
+  #     - ./java/api_email.java:/code/api_email.java
+  #   working_dir: /code
+  #   command: ["java", "api_email.java"]
 
-  api_wallet:
-    image: openjdk:23-oracle
-    volumes:
-      - ./java/api_wallet.java:/code/api_wallet.java
-    working_dir: /code
-    command: ["java", "api_wallet.java"]
+  # api_wallet:
+  #   image: openjdk:23-oracle
+  #   volumes:
+  #     - ./java/api_wallet.java:/code/api_wallet.java
+  #   working_dir: /code
+  #   command: ["java", "api_wallet.java"]
 
-  qr:
-    image: openjdk:23-oracle
-    volumes:
-      - ./java/qr.java:/code/qr.java
-    working_dir: /code
-    command: ["java", "qr.java"]
+  # qr:
+  #   image: openjdk:23-oracle
+  #   volumes:
+  #     - ./java/qr.java:/code/qr.java
+  #   working_dir: /code
+  #   command: ["java", "qr.java"]
 
-  validacion:
-    image: openjdk:23-oracle
-    volumes:
-      - ./java/validacion.java:/code/validacion.java
-    working_dir: /code
-    command: ["java", "validacion.java"]
+  # validacion:
+  #   image: openjdk:23-oracle
+  #   volumes:
+  #     - ./java/validacion.java:/code/validacion.java
+  #   working_dir: /code
+  #   command: ["java", "validacion.java"]
 
-  entradas-restantes:
-    image: python:alpine3.19
-    volumes:
-        - ./python/entradas_restantes.py:/app/entradas_restantes.py
-    command: [python, -u,"/app/entradas_restantes.py"]
+  # entradas-restantes:
+  #   image: python:alpine3.19
+  #   volumes:
+  #       - ./python/entradas_restantes.py:/app/entradas_restantes.py
+  #   command: [python, -u,"/app/entradas_restantes.py"]
 
-  lista-partidos:
-    image: python:alpine3.19
-    volumes:
-        - ./python/lista_partidos.py:/app/lista_partidos.py
-    command: [python, -u,"/app/lista_partidos.py"]
+  # lista-partidos:
+  #   image: python:alpine3.19
+  #   volumes:
+  #       - ./python/lista_partidos.py:/app/lista_partidos.py
+  #   command: [python, -u,"/app/lista_partidos.py"]
 
-  mapa-entradas-restantes:
-    image: python:alpine3.19
-    volumes:
-        - ./python/mapa_entradas_restantes.py:/app/mapa_entradas_restantes.py
-    command: [python, -u,"/app/mapa_entradas_restantes.py"]
+  # mapa-entradas-restantes:
+  #   image: python:alpine3.19
+  #   volumes:
+  #       - ./python/mapa_entradas_restantes.py:/app/mapa_entradas_restantes.py
+  #   command: [python, -u,"/app/mapa_entradas_restantes.py"]
 
-  parking-mapa-sitios-restantes:
-    image: python:alpine3.19
-    volumes:
-        - ./python/parking_mapa_sitios_restantes.py:/app/parking_mapa_sitios_restantes.py
-    command: [python, -u,"/app/parking_mapa_sitios_restantes.py"]
+  # parking-mapa-sitios-restantes:
+  #   image: python:alpine3.19
+  #   volumes:
+  #       - ./python/parking_mapa_sitios_restantes.py:/app/parking_mapa_sitios_restantes.py
+  #   command: [python, -u,"/app/parking_mapa_sitios_restantes.py"]
 
-  parking-sitios-restantes:
-    image: python:alpine3.19
-    volumes:
-        - ./python/parking_sitios_restantes.py:/app/parking_sitios_restantes.py
-    command: [python, -u,"/app/parking_sitios_restantes.py"]
+  # parking-sitios-restantes:
+  #   image: python:alpine3.19
+  #   volumes:
+  #       - ./python/parking_sitios_restantes.py:/app/parking_sitios_restantes.py
+  #   command: [python, -u,"/app/parking_sitios_restantes.py"]
 
-  database-entradas:
-    image: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: mypassword
-      MYSQL_DATABASE: entradas
-      MYSQL_USER: myuser
-      MYSQL_PASSWORD: myuserpassword
-    volumes:
-      - ./mysql_data:/var/lib/mysql
+  # database-entradas:
+  #   image: mysql
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: mypassword
+  #     MYSQL_DATABASE: entradas
+  #     MYSQL_USER: myuser
+  #     MYSQL_PASSWORD: myuserpassword
+  #   volumes:
+  #     - ./mysql_data:/var/lib/mysql
 
-  database-entradas-slave:
-    image: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: mypassword
-      MYSQL_DATABASE: entradas
-      MYSQL_USER: myuser
-      MYSQL_PASSWORD: myuserpassword
-    volumes:
-      - ./mysql_data_slave:/var/lib/mysql
+  # database-entradas-slave:
+  #   image: mysql
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: mypassword
+  #     MYSQL_DATABASE: entradas
+  #     MYSQL_USER: myuser
+  #     MYSQL_PASSWORD: myuserpassword
+  #   volumes:
+  #     - ./mysql_data_slave:/var/lib/mysql
 
-  api_bizum:
-    build:
-      context: .
-      dockerfile: pasarela_pago/Dockerfile
-    command: ["./main", "bizum"]
+  # api_bizum:
+  #   build:
+  #     context: .
+  #     dockerfile: pasarela_pago/Dockerfile
+  #   command: ["./main", "bizum"]
 
-  api_paypal:
-    build:
-      context: .
-      dockerfile: pasarela_pago/Dockerfile
-    command: ["./main", "paypal"]
+  # api_paypal:
+  #   build:
+  #     context: .
+  #     dockerfile: pasarela_pago/Dockerfile
+  #   command: ["./main", "paypal"]
 
-  api_tarjeta:
-    build:
-      context: .
-      dockerfile: pasarela_pago/Dockerfile
-    command: ["./main", "tarjeta"]
+  # api_tarjeta:
+  #   build:
+  #     context: .
+  #     dockerfile: pasarela_pago/Dockerfile
+  #   command: ["./main", "tarjeta"]
 
-  api_transferencia:
-    build:
-      context: .
-      dockerfile: pasarela_pago/Dockerfile
-    command: ["./main", "transferencia"]
+  # api_transferencia:
+  #   build:
+  #     context: .
+  #     dockerfile: pasarela_pago/Dockerfile
+  #   command: ["./main", "transferencia"]
