@@ -4,4 +4,11 @@ rabbitmq/rabbitmq-producer/npm-debug.log
 rabbitmq/rabbitmq-producer/.nyc
 rabbitmq/rabbitmq-producer/.env
 rabbitmq/rabbitmq-producer/.DS_Store
-frontend/.vscode
+frontend/angular/.vscode
+frontend/.angular/
+frontend/dist/
+frontend/node_modules/
+
+mysql_data/
+mysql_data_slave/
+cert_data/
