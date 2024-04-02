@@ -50,13 +50,26 @@ Services running Python scripts for various functions of the application.
 
 Services providing different payment methods as part of a payment gateway.
 
+### Certbot
+Generates SSL/TLS certificates to enable secure HTTPS access via Nginx proxy,
+
+### Database for Ticket Entries
+
+The ticket entries database is responsible for storing information about ticket sales and related data for events hosted at our stadium.
+
+The primary database for ticket entries is the main database where all ticket-related information is stored. In addition to the primary database, we maintain a slave database dedicated to backup  purposes. 
+
 ## Execution Instructions
 
-1. Ensure Docker and Docker Compose are installed on your system.
-2. Clone this repository to your local machine.
-3. Navigate to the project directory.
+1. Ensure [Docker](https://docs.docker.com/engine/install/) and [Docker Compose](https://docs.docker.com/compose/install/) are installed on your system.
+2. Ensure [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) is installed on your system.
+3. Type following commands:
+```
+git clone git@github.com:j0rg30n3st1c/acme-stadium-docker.git
+cd acme-stadium-docker/
+```
 4. Run `docker-compose up` to build and bring up all the services.
-5. Access the application through port 8080 in your browser.
+5. Access the application through port 8080 in your browser: [https://localhost:8080/](https://localhost:8080/)
 
 ## Additional Notes
 
