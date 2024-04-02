@@ -29,7 +29,7 @@ services:
     command: [python, -u,"/app/alineaciones_partido.py"]
 
   rabbitmq:
-    image: rabbitmq:management
+    image: rabbitmq:3-management
     ports:
       - "15672:15672"
 
@@ -44,6 +44,8 @@ services:
     build:
       context: ./rabbitmq
       dockerfile: rabbitmq-consumer/Dockerfile
+    volumes:
+      - ./rabbitmq/rabbitmq-consumer/consumer.py:/app/app.py
     depends_on:
       - rabbitmq
 
