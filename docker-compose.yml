@@ -6,6 +6,16 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    depends_on:
+      - alineaciones-partido
+      - entradas-restantes
+      - lista-partidos
+      - mapa-entradas-restantes
+      - parking-mapa-sitios-restantes
+      - parking-sitios-restantes
+    networks:
+      - proxy_network
+      - web_network
 
   nginx-proxy:
     image: nginx:stable-alpine3.17
@@ -15,6 +25,12 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    depends_on:
+      - frontend
+      - cert-generator
+    networks:
+      - proxy_network
+      - cert_data_network
 
   cert-generator:
     image: ubuntu:22.04
@@ -22,12 +38,16 @@ services:
       - ./certbot/generate-cert.sh:/generate-cert.sh
       - ./cert_data:/cert_data
     command: sh /generate-cert.sh
+    networks:
+      - cert_data_network
 
   alineaciones-partido:
     image: python:alpine3.19
     volumes:
         - ./python/alineaciones_partido.py:/app/alineaciones_partido.py
     command: [python, -u,"/app/alineaciones_partido.py"]
+    networks:
+      - web_network
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -90,50 +110,70 @@ services:
     volumes:
         - ./python/entradas_restantes.py:/app/entradas_restantes.py
     command: [python, -u,"/app/entradas_restantes.py"]
+    depends_on:
+      - database-entradas
+    networks:
+      - ticketing_network
+      - web_network
 
   lista-partidos:
     image: python:alpine3.19
     volumes:
         - ./python/lista_partidos.py:/app/lista_partidos.py
     command: [python, -u,"/app/lista_partidos.py"]
+    networks:
+      - web_network
 
   mapa-entradas-restantes:
     image: python:alpine3.19
     volumes:
         - ./python/mapa_entradas_restantes.py:/app/mapa_entradas_restantes.py
     command: [python, -u,"/app/mapa_entradas_restantes.py"]
+    depends_on:
+      - database-entradas
+    networks:
+      - ticketing_network
+      - web_network
 
   parking-mapa-sitios-restantes:
     image: python:alpine3.19
     volumes:
         - ./python/parking_mapa_sitios_restantes.py:/app/parking_mapa_sitios_restantes.py
     command: [python, -u,"/app/parking_mapa_sitios_restantes.py"]
+    networks:
+      - web_network
 
   parking-sitios-restantes:
     image: python:alpine3.19
     volumes:
         - ./python/parking_sitios_restantes.py:/app/parking_sitios_restantes.py
     command: [python, -u,"/app/parking_sitios_restantes.py"]
+    networks:
+      - web_network
 
   database-entradas:
     image: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: mypassword
-      MYSQL_DATABASE: entradas
-      MYSQL_USER: myuser
-      MYSQL_PASSWORD: myuserpassword
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - ./mysql_data:/var/lib/mysql
+    networks:
+      - ticketing_network
 
   database-entradas-slave:
     image: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: mypassword
-      MYSQL_DATABASE: entradas
-      MYSQL_USER: myuser
-      MYSQL_PASSWORD: myuserpassword
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - ./mysql_data_slave:/var/lib/mysql
+    networks:
+      - ticketing_network
 
   api_bizum:
     build:
@@ -158,3 +198,13 @@ services:
       context: .
       dockerfile: pasarela_pago/Dockerfile
     command: ["./main", "transferencia"]
+
+networks:
+  ticketing_network:
+    driver: bridge
+  proxy_network:
+    driver: bridge
+  cert_data_network:
+    driver: bridge
+  web_network:
+    driver: bridge
