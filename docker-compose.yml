@@ -53,6 +53,9 @@ services:
     image: rabbitmq:3-management
     ports:
       - "15672:15672"
+    networks:
+      - producer_payments_network
+      - consumer_payments_network
 
   producer:
     build:
@@ -60,6 +63,9 @@ services:
       dockerfile: rabbitmq-producer/Dockerfile
     depends_on:
       - rabbitmq
+    networks:
+      - pasarela_pago_network
+      - producer_payments_network
 
   consumer:
     build:
@@ -69,6 +75,13 @@ services:
       - ./rabbitmq/rabbitmq-consumer/consumer.py:/app/app.py
     depends_on:
       - rabbitmq
+      - api_transferencia
+      - api_tarjeta
+      - api_bizum
+      - api_paypal
+    networks:
+      - consumer_payments_network
+      - do_payments_network
 
   api_descarga:
     image: openjdk:23-oracle
@@ -76,6 +89,8 @@ services:
       - ./java/api_descarga.java:/code/api_descarga.java
     working_dir: /code
     command: ["java", "api_descarga.java"]
+    networks:
+      - sending_tickets_network
 
   api_email:
     image: openjdk:23-oracle
@@ -83,6 +98,8 @@ services:
       - ./java/api_email.java:/code/api_email.java
     working_dir: /code
     command: ["java", "api_email.java"]
+    networks:
+      - sending_tickets_network
 
   api_wallet:
     image: openjdk:23-oracle
@@ -90,6 +107,8 @@ services:
       - ./java/api_wallet.java:/code/api_wallet.java
     working_dir: /code
     command: ["java", "api_wallet.java"]
+    networks:
+      - sending_tickets_network
 
   qr:
     image: openjdk:23-oracle
@@ -112,9 +131,15 @@ services:
     command: [python, -u,"/app/entradas_restantes.py"]
     depends_on:
       - database-entradas
+      - api_descarga
+      - api_email
+      - api_wallet
+      - producer
     networks:
       - ticketing_network
       - web_network
+      - sending_tickets_network
+      - pasarela_pago_network
 
   lista-partidos:
     image: python:alpine3.19
@@ -134,6 +159,7 @@ services:
     networks:
       - ticketing_network
       - web_network
+      - sending_tickets_network
 
   parking-mapa-sitios-restantes:
     image: python:alpine3.19
@@ -142,14 +168,22 @@ services:
     command: [python, -u,"/app/parking_mapa_sitios_restantes.py"]
     networks:
       - web_network
+      - sending_tickets_network
 
   parking-sitios-restantes:
     image: python:alpine3.19
     volumes:
         - ./python/parking_sitios_restantes.py:/app/parking_sitios_restantes.py
     command: [python, -u,"/app/parking_sitios_restantes.py"]
+    depends_on:
+      - api_descarga
+      - api_email
+      - api_wallet
+      - producer
     networks:
       - web_network
+      - sending_tickets_network
+      - pasarela_pago_network
 
   database-entradas:
     image: mysql
@@ -180,24 +214,32 @@ services:
       context: .
       dockerfile: pasarela_pago/Dockerfile
     command: ["./main", "bizum"]
+    networks:
+      - do_payments_network
 
   api_paypal:
     build:
       context: .
       dockerfile: pasarela_pago/Dockerfile
     command: ["./main", "paypal"]
+    networks:
+      - do_payments_network
 
   api_tarjeta:
     build:
       context: .
       dockerfile: pasarela_pago/Dockerfile
     command: ["./main", "tarjeta"]
+    networks:
+      - do_payments_network
 
   api_transferencia:
     build:
       context: .
       dockerfile: pasarela_pago/Dockerfile
     command: ["./main", "transferencia"]
+    networks:
+      - do_payments_network
 
 networks:
   ticketing_network:
@@ -207,4 +249,14 @@ networks:
   cert_data_network:
     driver: bridge
   web_network:
+    driver: bridge
+  sending_tickets_network:
+    driver: bridge
+  pasarela_pago_network:
+    driver: bridge
+  producer_payments_network:
+    driver: bridge
+  consumer_payments_network:
+    driver: bridge
+  do_payments_network:
     driver: bridge
