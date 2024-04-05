@@ -1,4 +1,4 @@
-# acme-stadium-docker
+# Acme Stadium
 A events stadium infrastructure implementation
 
 This project involves a multi-service deployment using Docker Compose. It consists of several services for different functionalities related to a web application, including frontend, backend servers, messaging services, payment gateways, among others.
@@ -69,8 +69,9 @@ The primary database for ticket entries is the main database where all ticket-re
 git clone git@github.com:j0rg30n3st1c/acme-stadium-docker.git
 cd acme-stadium-docker/
 ```
-4. Run `docker-compose up` to build and bring up all the services.
-5. Access the application through port 8080 in your browser: [https://localhost:8080/](https://localhost:8080/)
+4. Configure environment variables (Optional): Make sure to customize the .env file according to your desired configuration. Adjust the MySQL variables as needed to suit your application requirements. Use the provided .env file as a template.
+5. Run `docker-compose up` to build and bring up all the services.
+6. Access the application through port 8080 in your browser: [https://localhost:8080/](https://localhost:8080/)
 
 ## Additional Notes
 
