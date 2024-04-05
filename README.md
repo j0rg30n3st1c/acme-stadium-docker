@@ -9,17 +9,17 @@ The `docker-compose.yml` file defines all the services required for deployment. 
 
 ### Frontend
 
-Service hosting the frontend web application.
-
-### Nginx Proxy
-
-The Nginx Proxy service routes incoming requests to different backend services based on their functionality:
+Service hosting the frontend web application. This service permits communicate with different backend services based on their functionality:
 
 - **Event Management**
 
 - **Parking Reservation**
 
 - **Ticket Sales**
+
+### Nginx Proxy
+
+The Nginx Proxy service routes incoming requests to frontend service.
 
 ### Match Alignments
 
@@ -31,11 +31,11 @@ The RabbitMQ service acts as a message broker between the backend (Producer) and
 
 ### Producer
 
-The Producer service, which is integrated with the backend, generates and sends messages to RabbitMQ.
+The Producer service, which is integrated with the backend, generates and sends messages to RabbitMQ related with ticket purchase requests.
 
 ### Consumer
 
-The Consumer service, part of the API, processes messages received from RabbitMQ at a rate compatible with its processing capabilities.
+The consumer service processes messages received from RabbitMQ at a rate compatible with its processing capabilities and makes use of payment APIs: bizum, transfer, etc.
 
 
 ### Download API, Email API, Wallet API, QR, Validation
@@ -50,8 +50,9 @@ Services running Python scripts for various functions of the application.
 
 Services providing different payment methods as part of a payment gateway.
 
-### Certbot
-Generates SSL/TLS certificates to enable secure HTTPS access via Nginx proxy,
+### Cert Generator
+Generates SSL/TLS certificates to enable secure HTTPS access via Nginx proxy. 
+This service checks if the certificate already exists. If it does not exist, generate a new SSL certificate. This certificate is issued for a specific domain. If one already exists, check if the certificate will expire in less than a week. If so, renew the certificate.
 
 ### Database for Ticket Entries
 
